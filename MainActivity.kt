@@ -3,6 +3,7 @@ package com.example.offlinemap
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -16,17 +17,20 @@ import java.io.FileOutputStream
 class MainActivity : AppCompatActivity() {
 
     private lateinit var map: MapView
+    private lateinit var txtInstruction: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        // הגדרת תצורת Osmdroid
+
+        // הגדרת תצורת Osmdroid לעבודה מקומית
         val ctx = applicationContext
         Configuration.getInstance().load(ctx, androidx.preference.PreferenceManager.getDefaultSharedPreferences(ctx))
 
         setContentView(R.layout.activity_main)
 
         map = findViewById(R.id.map)
+        txtInstruction = findViewById(R.id.txtInstruction)
+
         map.setMultiTouchControls(true)
 
         // שלב 1: העתקת קובץ המפה מ-assets לזיכרון המכשיר (אם הוא עדיין לא הועתק)
@@ -40,10 +44,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // הגדרת מיקום התחלתי (מרכז הארץ / תל אביב) ורמת זום
+        // הגדרת מיקום התחלתי ורמת זום
         val mapController = map.controller
         mapController.setZoom(11.0)
-        val startPoint = GeoPoint(32.0853, 34.7818)
+        val startPoint = GeoPoint(32.0853, 34.7818) // מרכז הארץ / תל אביב
         mapController.setCenter(startPoint)
 
         checkPermissions()
@@ -56,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         val file = File(filesDir, "israel.map")
         try {
             if (!file.exists()) {
-                // פתיחת הקובץ מתוך ה-assets והעברתו לזיכרון הפנימי
                 assets.open("maps/israel.map").use { inputStream ->
                     FileOutputStream(file).use { outputStream ->
                         inputStream.copyTo(outputStream)
