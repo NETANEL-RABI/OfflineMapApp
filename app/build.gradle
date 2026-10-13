@@ -39,4 +39,7 @@ dependencies {
     
     // ספריית המפות החיצונית לאנדרואיד (תומכת במפות אופליין)
     implementation 'org.osmdroid:osmdroid-android:6.1.18'
+    
+    // תמיכה בקובצי וקטור מסוג .map (Mapsforge)
+    implementation 'org.osmdroid:osmdroid-mapsforge:6.1.18'
 }
